@@ -1,5 +1,4 @@
 # AI-Pandora 🎯 | Your All-in-One AI & Developer Toolkit
-# AI-Pandora 🎯 | 您的一站式 AI 与开发者工具箱
 
 [English](#english) | [中文](#中文)
 
