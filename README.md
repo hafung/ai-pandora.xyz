@@ -5,7 +5,7 @@
 
 <div align="center">
   <a href="https://ai-pandora.xyz">
-    <img src="https://ai-pandora.xyz/favico.ico" alt="AI-Pandora Logo" width="200"/>
+    <img src="https://ai-pandora.xyz/images/ai-pandora-logo.png" alt="AI-Pandora Logo" width="200"/>
   </a>
   
   <p>Free, No Login Required, Privacy First</p>
