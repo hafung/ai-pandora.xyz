@@ -1,0 +1,47 @@
+<?php
+
+/*
+ * "Vibrant": "鲜艳的",
+//    "Pastel": "柔和的",
+//    "Monochromatic": "单色的",
+//    "Dark": "深色的",
+//    "Warm": "暖色调的",
+//    "Cool": "冷色调的",
+//    "Oil painting": "油画",
+//    "Watercolor": "水彩",
+//    "Digital art": "数字艺术",
+//    "Sketch": "素描",
+//    "Anime": "动漫风格",
+//    "Photorealistic": "照片写实",
+//    "Joyful": "欢乐的",
+//    "Melancholic": "忧郁的",
+//    "Mysterious": "神秘的",
+//    "Peaceful": "平和的",
+//    "Tense": "紧张的",
+//    "MOOD": "情绪/氛围",
+//    "Romantic": "浪漫的",
+//    "Running": "奔跑",
+//    "Sitting": "坐着",
+//    "Flying": "飞行",
+//    "Dancing": "跳舞",
+//    "Fighting": "战斗",
+//    "Sleeping": "睡眠",
+//    "General": "通用"
+ * */
+return [
+    'COLOR' => '色彩',
+    'ART_STYLE' => '艺术风格',
+    'MOOD' => '情绪/氛围',
+    'SUBJECT' => '主体',
+    'ACTION' => '动作/姿势',
+    'SETTING' => '场景',
+    'other' => '其他',
+    'running' => '奔跑',
+    'sitting' => '坐着',
+    'flying' => '飞行',
+    'dancing' => '跳舞',
+    'fighting' => '战斗',
+    'sleeping' => '睡眠',
+    'General' => '通用',
+    // ... 其他字段
+];
