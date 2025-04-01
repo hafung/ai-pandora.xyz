@@ -6,6 +6,7 @@ namespace App\Services\AI\Contracts;
 use App\Services\AI\ImageParams;
 
 // async & for wujie
+// @deprecated
 interface ImageAiServiceI {
 
 //    public function submitTask(string $prompt, array $opt = []): array;

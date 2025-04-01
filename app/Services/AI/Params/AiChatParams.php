@@ -31,12 +31,7 @@ class AiChatParams {
         if (isset($params['use_context'] )) {
             $this->setUseContext((bool)$params['use_context']);
         }
-//        $this->setUseContext($params['use_context'] ?? true);
 
-//        $this->setSystemPrompt($params['system_prompt'] ?? '');
-//        if (!empty($params['system_prompt'])) {
-//            $this->setSystemPrompt($params['system_prompt']);
-//        }
         $this->setSystemPrompt(empty($params['system_prompt']) ? '' : $params['system_prompt']);
 
         $this->setImages($params['images'] ?? []);

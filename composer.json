@@ -20,6 +20,7 @@
         "livewire/livewire": "^2.12",
         "predis/predis": "^2.2",
         "workerman/workerman": "^4.1",
+        "overtrue/wechat": "~5.0",
         "zgldh/qiniu-laravel-storage": "^0.10.4"
     },
     "require-dev": {

@@ -87,6 +87,22 @@ class AiService {
         return $this->aiAdapter->chat($this->assembleMessages($params), true, $callback);
     }
 
+    public function callAgentOnce($userPrompt, $opts = []): ?string {
+
+        $model = $opts['model'] ?? AiConst::MODEL_GPT_4O;
+
+        $aiChatParams = new AiChatParams([
+            'model' => $model,
+            'user_prompt' => $userPrompt,
+            'use_context' => false,
+            'temperature' => 0.7,
+            'checkpoint' => AiConst::SWOOLE_MODELS_CHECKPOINTS[$model] ?? ''
+        ]);
+
+//        return $this->aiAdapter->chat($aiChatParams);
+        return $this->chat($aiChatParams);
+    }
+
     public function assembleMessages(AiChatParams $params): AiChatParams {
 
         $urls = $params->getImages();

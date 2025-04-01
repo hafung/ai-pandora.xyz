@@ -6,7 +6,6 @@ use InvalidArgumentException;
 use App\Services\AI\Adapters\OpenAiAdapter;
 use App\Services\AI\Adapters\SiliconAiAdapter;
 use App\Services\AI\Contracts\TextAiServiceInterface;
-use App\Services\AI\Contracts\MusicAiServiceInterface;
 
 class AdapterFactory {
 
@@ -32,7 +31,7 @@ class AdapterFactory {
      * $openAiAdapter = AdapterFactory::create(OpenAiAdapter::class, [$provider]);
      * @param string $adapter The name of the adapter.
      * @param array $params
-     * @return MusicAiServiceInterface|TextAiServiceInterface|OpenAiAdapter|SiliconAiAdapter
+     * @return TextAiServiceInterface|OpenAiAdapter|SiliconAiAdapter
      */
     public static function create(string $adapter, array $params = []) {
         if (!class_exists($adapter)) {

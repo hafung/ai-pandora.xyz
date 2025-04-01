@@ -2,10 +2,9 @@
 
 namespace App\Services\AI\Adapters;
 
-use App\Services\AI\Factories\AdapterFactory;
 use Throwable;
 use Exception;
-use GuzzleHttp\Client;
+use App\Exceptions\ApiException;
 use App\Library\SwooleAi\OpenAi;
 use Illuminate\Support\Facades\Log;
 use App\Services\AI\Params\AiChatParams;
@@ -19,18 +18,12 @@ class OpenAiAdapter implements AiAdapterInterface {
     private OpenAi $openAi;
     private string $provider;
 
-//    public function __construct($apiKey = '', $host = '', $provider = '') {
-//    public function __construct($provider = '', $apiKey = '', $host = '') {
     public function __construct($provider = 'openai', $apiKey = '', $host = '') {
 
-        // todo only need provider in constructor, 唯一弊端就是和config绑定死了，不能灵活传参？ 但目前已经破坏了，深度绑定provider config了...
-
-//        $this->apiKey = $apiKey ?: config('ai.openai_api_key');
         $this->apiKey = $apiKey ?: config("ai.{$provider}_api_key");
 
         $this->openAi = new OpenAi($this->apiKey);
 
-//        $this->apiHost = $host ?: config('ai.openai_api_host');
         $this->apiHost = $host ?: config("ai.{$provider}_api_host");
 
         $this->provider = $provider;
@@ -38,21 +31,6 @@ class OpenAiAdapter implements AiAdapterInterface {
         $this->openAi->setBaseURL($this->apiHost);
     }
 
-    public function getModelNameForWriting(): string {
-        return $this->getModelName('writing');
-    }
-
-    public function getModelNameForCoding(): string {
-        return $this->getModelName('coding');
-    }
-
-    public function getModelNameForChat(): string {
-        return $this->getModelName('chat');
-    }
-
-    public function getCheapestModel(): string {
-        return $this->getModelName('cheapest');
-    }
 
     public function getModelName(string $type) {
         return config("ai.{$this->provider}_llm_for_{$type}");
@@ -72,7 +50,6 @@ class OpenAiAdapter implements AiAdapterInterface {
 
         return [];
     }
-
 
     public function getError(): string {
         return $this->openAi->getError();
@@ -146,38 +123,24 @@ class OpenAiAdapter implements AiAdapterInterface {
             $opt['size'] = $this->calculateSizeFromAspectRatio($opt['aspect_ratio']);
         }
 
-        // 将中转商的支持的、同时支持dalle格式的图片模型列出来， 比如 ephone =》 ['recraftv3',''],   common => ['dall-e-3']
-        // if provider is ephone, model could choose: recraftv3(￥0.08/次)  flux.1.1-pro/flux-pro（￥0.12/次） flux-pro-1.1-ultra（￥0.18/次）  flux-dev（￥0.075）  ~~kling_image（￥0.04）~~ 异步
-        // dall-e-3 standard ￥0.04/￥0.08   HD ￥0.08/￥0.12
-        // v3 和 ephone 共用的画图model: flux-dev flux-pro flux.1.1-pro dall-e-3  -- v3不会长期用，完了就换ephone了...
-        // todo 测试下 kling-v1  -- 异步的，用新的适配器吧
-        // v3 换 flux-dev 报错，可能是因为 不支持 'response_format' => 'b64_json'  -- damn right!!
         $response = $this->openAi->image([
-                'model' => $opt['model'] ?? 'flux-dev',
+                'model' => $opt['model'] ?? 'dall-e-3', // flux-dev
                 'prompt' => $opt['prompt'],
                 'size' => $opt['size'] ?? '1024x1024',
                 'quality' => $opt['quality'] ?? 'standard',
                 'n' => $opt['n'] ?? 1,
                 'response_format' => 'url'
-//                'response_format' => 'b64_json'
             ]);
-        if (empty($response)) {
-//            Log::error('open-ai-image-error', $response);
-            return AdapterFactory::create(SiliconAiAdapter::class)->generateImages($opt);
-//            throw new Exception('OpenAI返回数据格式错误');
-        }
+
 
         $responseArr = json_decode($response, true);
 
         if (empty($responseArr['data'])) {
-            return AdapterFactory::create(SiliconAiAdapter::class)->generateImages($opt);
-//            throw new Exception('OpenAI返回数据格式错误');
+            Log::error('open-ai-image:$opt ', $opt);
+            throw new ApiException(__('error happened, likely due to an inappropriate prompt. Please modify it and try again'));
         }
 
         return array_column($responseArr['data'], 'url') ?? []; // 直接给原始url，hk server不会被墙
-
-//        return $this->processImages($responseArr['data']); // works too
-//        return $this->processAndStoreImages($responseArr['data']);
     }
 
     private function calculateSizeFromAspectRatio(string $aspectRatio): string {
@@ -218,7 +181,6 @@ class OpenAiAdapter implements AiAdapterInterface {
                 $filePath = 'images/' . $fileName;
 
                 if ($disk->put($filePath, $imageData)) {
-//                    $url = $disk->url($filePath);
                     $url = $disk->downloadUrl($filePath, 'https');
                     $urls[] = $url;
                 } else {
@@ -244,42 +206,6 @@ class OpenAiAdapter implements AiAdapterInterface {
 
         return $results;
     }
-
-    // todo 语音转文本  /v1/audio/transcriptions
-
-
-    // todo /v1/audio/translations -- 单纯音频翻译为英文
-
-
-    // todo 目前写死查的v3，后续统一接口 --不好统一，很多三方没开放接口查询
-//    public function getBalance() {
-//
-//        $accessToken = config('ai.v3_ai_access_token');
-//
-//        try {
-//
-//            $response = (new Client())->get($this->apiHost . '/api/user/self', [
-//                'headers' => [
-//                    'Authorization' => 'Bearer ' . $accessToken,
-//                    'Content-Type' => 'application/json'
-//                ]
-//            ]);
-//
-//            $contents = json_decode($response->getBody()->getContents(), true);
-//
-//        } catch (\GuzzleHttp\Exception\ConnectException | Exception $e) {
-//
-//            return '获取V3余额失败:' . $e->getMessage();
-//
-//        }
-//
-//        if (!isset($contents['data']['quota'])) {
-//            return $contents['message'] ?? '获取余额失败';
-//        }
-//
-//        return $contents['data']['quota'] / 500000;  // $
-//
-//    }
 
 
 }

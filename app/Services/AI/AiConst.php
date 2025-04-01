@@ -5,22 +5,22 @@ namespace App\Services\AI;
 final class AiConst {
 
 
-    const MODEL_CLAUDE35_SONNET_LATEST_VERSION = 'claude-3-5-sonnet-latest';
-    const MODEL_CLAUDE35_SONNET_20241022_VERSION = 'claude-3-5-sonnet-20241022';
-    const MODEL_CLAUDE35_SONNET_20240620_VERSION = 'claude-3-5-sonnet-20240620';
-
     const DOUBAO_LATEST_VERSION = 'Doubao-pro-32k';
 
     const KIMI_LATEST_VERSION = 'moonshot-v1-128k';
 
     const MODEL_GPT_4O = 'gpt-4o';
+    const MODEL_O3_MINI = 'o3-mini';
     const MODEL_GPT_4O_MINI = 'gpt-4o-mini';
 
+    // swoole
     const MODEL_SWOOLE_DOUBAO = 'doubao';
     const MODEL_SWOOLE_KIMI = 'kimi';
 
-    const MODEL_QWEN = 'qwen-long';
+    const MODEL_QWEN_LONG = 'qwen-long';
     const MODEL_DEEPSEEK_CHAT = 'deepseek-chat';
+    // deepseek-reasoner
+    const MODEL_DEEPSEEK_REASONER = 'deepseek-reasoner'; // R1
 
     const SWOOLE_MODELS_CHECKPOINTS = [
         self::MODEL_SWOOLE_DOUBAO => self::DOUBAO_LATEST_VERSION,
@@ -34,9 +34,7 @@ final class AiConst {
     const MODEL_YI_LIGHTNING = 'yi-lightning';
     CONST MODEL_COMMAND_R_PLUS = 'command-r-plus';
 
-    const MODEL_GLM_4_FLASH = 'glm-4-flash';
 
-    const MODEL_GEMINI_1_5_PRO = 'gemini-1.5-pro';
     const MODEL_GEMINI_1_5_PRO_LATEST = 'gemini-1.5-pro-latest';
     const MODEL_GEMINI_1_5_FLASH_LATEST = 'gemini-1.5-flash-latest';
 
@@ -49,19 +47,13 @@ final class AiConst {
     const MODEL_META_LLAMA_VISION_FREE = 'meta-llama/Llama-Vision-Free'; // free
 
     // silicon
-    const MODEL_QWEN25_CODER_32B_INSTRUCT = 'Qwen/Qwen2.5-Coder-32B-Instruct';
-    const MODEL_DEEPSEEK_V2_5 = 'deepseek-ai/DeepSeek-V2.5';
-    const MODEL_QWEN25_72B_INSTRUCT_128K = 'Qwen/Qwen2.5-72B-Instruct-128K';
-    const MODEL_QWEN25_CODER_7B_INSTRUCT = 'Qwen/Qwen2.5-Coder-7B-Instruct'; // 免费
+    const MODEL_QWEN25_CODER_32B_INSTRUCT = 'Qwen/Qwen2.5-Coder-32B-Instruct';  // ￥1.26 / M tokens
+    const MODEL_DEEPSEEK_V2_5 = 'deepseek-ai/DeepSeek-V2.5';  // ￥1.33 / M tokens
+    const MODEL_QWEN25_72B_INSTRUCT_128K = 'Qwen/Qwen2.5-72B-Instruct-128K'; // ￥4.13 / M tokens
     const MODEL_QWEN25_7B_INSTRUCT = 'Qwen/Qwen2.5-7B-Instruct'; // 免费
     const MODEL_QWEN2_7B_INSTRUCT = 'Qwen/Qwen2-7B-Instruct'; // 免费
     const MODEL_GLM_4_9B_CHAT = 'THUDM/glm-4-9b-chat'; // 免费
     const MODEL_FLUX_1_SCHNEL = 'black-forest-labs/FLUX.1-schnell';
-    const MODEL_FUNAUDIOLM_SENSEVOICE_SMALL = 'FunAudioLLM/SenseVoiceSmall';
-    const MODEL_STABILITYAI_STABLE_DIFFUSION_3_5_LARGE = 'stabilityai/stable-diffusion-3-5-large'; // 限时免费
-    const MODEL_FLUX_1_DEV = 'black-forest-labs/FLUX.1-dev';
-    const MODEL_FISHAUDIO_FISH_SPEECH_1_4 = 'fishaudio/fish-speech-1.4';
-    const MODEL_RVC_BOSS_GPT_SOVITS = 'RVC-Boss/GPT-SoVITS';
 
     const MODEL_QWEN_PLUS_LATEST = 'qwen-plus-latest';
     const MODEL_QWEN_TURBO_LATEST = 'qwen-turbo-latest';
@@ -73,6 +65,9 @@ final class AiConst {
     const MODEL_QWEN_CODER_TURBO = 'qwen-coder-turbo';
     const MODEL_QWEN_CODER_TURBO_LATEST = 'qwen-coder-turbo-latest';
     const MODEL_QWEN25_72B_INSTRUCT = 'qwen2.5-72b-instruct';
+    const MODEL_QWQ_PLUS = 'qwq-plus';
+    // https://bailian.console.aliyun.com/?accounttraceid=89c686dfcfb7457fbd0295f7a989c153oani#/model-market/detail/qwen-omni-turbo-latest
+    const MODEL_QWEN_OMNI_TURBO_LATEST = 'qwen-omni-turbo-latest';
 
     const MODEL_LIST = [
         [
@@ -80,14 +75,14 @@ final class AiConst {
             'label' => 'GPT-4o-mini',
             'max_tokens' => 4096,
             'multiplier' => 0.075,
-            'providers' => ['omg'],
+            'providers' => ['swoole'], //
         ],
         [
             'val' => self::MODEL_GPT_4O,
             'label' => 'GPT-4o',
             'max_tokens' => 8192,
             'multiplier' => 1.25,
-            'providers' => ['omg'],
+            'providers' => ['swoole'], //
         ],
         [
             'val' => self::MODEL_GEMINI_1_5_FLASH_LATEST,
@@ -108,7 +103,7 @@ final class AiConst {
             'label' => 'DeepSeek Chat',
             'max_tokens' => 4096,
             'multiplier' => 0.05,
-            'providers' => ['omg'],
+            'providers' => ['swoole'],
         ],
         [
             'val' => self::MODEL_COMMAND_R_PLUS,
@@ -139,7 +134,7 @@ final class AiConst {
             'providers' => ['omg'],
         ],
         [
-            'val' => self::MODEL_QWEN,
+            'val' => self::MODEL_QWEN_LONG,
             'label' => 'Qwen Long',
             'max_tokens' => 4096,
             'multiplier' => 0.05,

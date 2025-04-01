@@ -2,7 +2,8 @@
 
 namespace App\Services\AI\Contracts;
 
-use App\Services\AI\ImageParams;
+//use App\Services\AI\ImageParams;
+use App\Services\AI\Params\ImageParams;
 
 interface AsyncImageAiServiceInterface {
 

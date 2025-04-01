@@ -6,6 +6,7 @@ use App\Services\AI\AiConst;
 use App\Traits\ImageProcessTrait;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Log;
 
 class SiliconAiAdapter extends OpenAiAdapter {
 
@@ -84,6 +85,7 @@ class SiliconAiAdapter extends OpenAiAdapter {
             ->post($this->apiHost . self::IMAGE_GENERATE_ENDPOINT, $requestParams);
 
         $response->throw();  // This will throw an exception for 4xx and 5xx errors
+
 
         $responseData = $response->json();
         if (isset($responseData['images'])) {
